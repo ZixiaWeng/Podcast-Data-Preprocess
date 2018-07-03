@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # import podcasts csv file and extract urls
-podcasts = pd.read_csv('itunes-podcast-list-UNDUP.csv')
+podcasts = pd.read_csv('../data/itunes-podcast-list-UNDUP.csv')
 itunes_link = podcasts.iloc[:,0]
 
 # loop through url list to scrape each podcast page
@@ -11,7 +11,7 @@ for i in range(len(itunes_link)):
     print(podcasts.iloc[:,1][i])
     print(itunes_link)
     try:
-        page = requests.get(podcasts.iloc[:,1][i]).text
+        page = requests.get(itunes_link[i]).text
     except requests.exceptions.Timeout:
         print('The request for a page at {} timed out...skipping.'.format(itunes_link[i])),
         continue
@@ -132,8 +132,8 @@ for i in range(len(itunes_link)):
     episode_list.drop_duplicates(keep='first')
 
     with open('itunes-podcast-details.csv', 'a') as f1:
-        podcast_details.to_csv(f1, header=False, index=False)
+        podcast_details.to_csv(f1, header=False, index=False, encoding='utf-8')
 
     with open('itunes-podcast-episodes.csv', 'a') as f2:
-        episode_list.to_csv(f2, header=False, index=False)
+        episode_list.to_csv(f2, header=False, index=False, encoding='utf-8')
 
